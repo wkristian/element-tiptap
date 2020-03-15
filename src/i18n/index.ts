@@ -3,12 +3,14 @@ import { warn } from '@/utils/console';
 import en from './en';
 import zh from './zh';
 import pl from './pl';
+import no from './no';
 
 const defaultLang = 'en';
 const dictionary = {
   en,
   zh,
   pl,
+  no,
 };
 
 let currentLang: object = dictionary[defaultLang];
