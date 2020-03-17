@@ -2,12 +2,16 @@ const path = require('path');
 
 module.exports = {
   runtimeCompiler: true,
+
   publicPath: process.env.NODE_ENV === 'production'
     ? '/element-tiptap/'
     : '/',
+
   transpileDependencies: [
-    /\bvue-awesome\b/
+    /\bvue-awesome\b/,
+    'quasar'
   ],
+
   configureWebpack: {
     resolve: {
       alias: {
@@ -18,4 +22,11 @@ module.exports = {
       }
     }
   },
+
+  pluginOptions: {
+    quasar: {
+      importStrategy: 'kebab',
+      rtlSupport: true
+    }
+  }
 };

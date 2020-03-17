@@ -1,23 +1,14 @@
 <template>
-  <div class="el-tiptap-editor__wrapper">
-    <el-tiptap
-      :extensions="textExtensions"
-      content="Text Extensions"
-    />
-
-    <el-tiptap
-      :extensions="paragraphExtensions"
-      content="Paragraph Extensions"
-    />
-
-    <el-tiptap
-      :extensions="richAndToolsExtensions"
-      content="Rich And Tools Extensions"
-    />
-  </div>
+  <q-page>
+      <el-tiptap
+        :extensions="textExtensions"
+        content="Text Extensions"
+      />
+  </q-page>
 </template>
 
 <script>
+
 import {
   Doc,
   Text,
@@ -67,20 +58,14 @@ export default {
         new Doc(),
         new Text(),
         new Paragraph(),
-        new Bold({ bubble: true }),
-        new Underline({ bubble: true }),
-        new Italic({ bubble: true }),
-        new Strike({ bubble: true }),
+        new Bold({ bubble: false }),
+        new Underline({ bubble: false }),
+        new Italic({ bubble: false }),
+        new Strike({ bubble: false }),
         new Code(),
-        new TextColor({ bubble: true }),
-        new TextHighlight({ bubble: true }),
+        new TextColor({ bubble: false }),
+        new TextHighlight({ bubble: false }),
         new FormatClear(),
-        new History(),
-      ],
-      paragraphExtensions: [
-        new Doc(),
-        new Text(),
-        new Paragraph(),
         new Heading({ level: 5 }),
         new ListItem(),
         new BulletList(),
@@ -92,12 +77,6 @@ export default {
         new Indent(),
         new Blockquote(),
         new CodeBlock(),
-        new History(),
-      ],
-      richAndToolsExtensions: [
-        new Doc(),
-        new Text(),
-        new Paragraph(),
         new Link(),
         new Image(),
         new Iframe(),

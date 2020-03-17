@@ -20,12 +20,12 @@ const routes = [
     children: [
       {
         name: 'Simple',
-        path: '/',
+        path: '/simple',
         component: Simple,
       },
       {
         name: 'AllExtensions',
-        path: 'all_extensions',
+        path: '/',
         component: AllExtensions,
       },
       {

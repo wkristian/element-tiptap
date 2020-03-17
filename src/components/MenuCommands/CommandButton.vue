@@ -1,19 +1,8 @@
 <template>
-  <el-tooltip
-    :content="tooltip"
-    :open-delay="350"
-    transition="el-zoom-in-bottom"
-    effect="dark"
-    placement="top"
-  >
-    <div
-      :class="commandButtonClass"
-      @mousedown.prevent
-      @click="command"
-    >
-      <v-icon :name="icon"/>
-    </div>
-  </el-tooltip>
+    <q-btn :class="commandButtonClass" @click.prevent="command" flat>
+      <v-icon :name="icon" />
+      <q-tooltip :delay="3000" :offset="[0, 5]">{{ tooltip }}</q-tooltip>
+    </q-btn>
 </template>
 
 <script lang="ts">
@@ -55,44 +44,42 @@ import 'vue-awesome/icons/eye';
 import 'vue-awesome/icons/regular/object-group';
 
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Tooltip } from 'element-ui';
 import { noop } from '@/utils/shared';
 
 @Component({
   components: {
     'v-icon': Icon,
-    [Tooltip.name]: Tooltip,
-  },
+  }
 })
 export default class CommandButton extends Vue {
   @Prop({
     type: String,
-    required: true,
+    required: true
   })
   readonly icon!: string;
 
   @Prop({
     type: Boolean,
-    default: false,
+    default: false
   })
   readonly isActive!: boolean;
 
   @Prop({
     type: String,
-    required: true,
+    required: true
   })
   readonly tooltip!: string;
 
   @Prop({
     type: Function,
-    default: noop,
+    default: noop
   })
   readonly command!: Function;
 
   private get commandButtonClass (): object {
     return {
       'el-tiptap-editor__command-button': true,
-      'el-tiptap-editor__command-button--active': this.isActive,
+      'el-tiptap-editor__command-button--active': this.isActive
     };
   }
 }

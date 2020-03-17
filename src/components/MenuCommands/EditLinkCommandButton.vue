@@ -8,7 +8,6 @@
 
 <script lang="ts">
 import { Component, Prop, Mixins } from 'vue-property-decorator';
-import { MessageBox } from 'element-ui';
 import { MenuData } from 'tiptap';
 import i18nMixin from '@/mixins/i18nMixin';
 import CommandButton from './CommandButton.vue';
@@ -32,17 +31,27 @@ export default class EditLinkCommandButton extends Mixins(i18nMixin) {
   readonly initUrl!: string;
 
   openApplyLinkControl (): void {
-    MessageBox.prompt('', this.t('editor.extensions.Link.edit.control.title'), {
-      confirmButtonText: this.t('editor.extensions.Link.edit.control.confirm'),
-      cancelButtonText: this.t('editor.extensions.Link.edit.control.cancel'),
-      inputPlaceholder: this.t('editor.extensions.Link.edit.control.placeholder'),
-      inputValue: this.initUrl,
-      roundButton: true,
     // @ts-ignore
-    }).then(({ value: href }) => {
+    this.$q.dialog({
+      title: this.t('editor.extensions.Link.edit.control.title'),
+      prompt: {
+        type: 'url', // TODO: Add validation on url input (must be http...)
+        model: this.initUrl
+      },
+      ok: {
+        label: this.t('editor.extensions.Link.edit.control.confirm'),
+        flat: true,
+        rounded: true
+      },
+      cancel: {
+        label: this.t('editor.extensions.Link.edit.control.cancel'),
+        flat: true,
+        rounded: true
+      },
+      persistent: false
+      // @ts-ignore
+    }).onOk(href => {
       this.editorContext.commands.link({ href });
-    }).catch(() => {
-
     });
   }
 };

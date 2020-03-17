@@ -1,4 +1,17 @@
 import Vue from 'vue';
+
+import './styles/quasar.scss';
+import 'quasar/dist/quasar.ie.polyfills';
+import '@quasar/extras/roboto-font/roboto-font.css';
+import '@quasar/extras/material-icons/material-icons.css';
+import {
+  Quasar,
+  QDialog,
+  ClosePopup,
+  Dialog,
+  QBtn
+} from 'quasar';
+
 import {
   // layout
   Container,
@@ -20,9 +33,25 @@ Vue.use(Button);
 
 Vue.use(ElementTiptapPlugin);
 
+Vue.use(Quasar, {
+  config: {
+    framework: 'all'
+  },
+  components: {
+    QDialog,
+    QBtn
+  },
+  directives: {
+    ClosePopup
+  },
+  plugins: {
+    Dialog
+  }
+});
+
 Vue.config.productionTip = false;
 
 new Vue({
   router,
   render: h => h(App),
-}).$mount('#app');
+}).$mount('#q-app');
