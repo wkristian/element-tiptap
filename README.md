@@ -1,5 +1,3 @@
-<p align="center"><a href="https://github.com/Leecason/element-tiptap" target="_blank" rel="noopener noreferrer"><img src="/examples/assets/logo_for_github.png?raw=true" alt="ElTiptap logo"></a></p>
-
 <p align="center">
   <img alt="npm" src="https://img.shields.io/npm/v/element-tiptap">
   <a href="https://www.codacy.com/manual/Leecason/element-tiptap?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Leecason/element-tiptap&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/33557c5554394b0ab5870797f33c61c3"/></a>
@@ -13,4 +11,4 @@
 
 <h3 align="center">Quasar Tiptap Editor</h3>
 
-A Quasar Demo of the element-tiptap reposetory
+A Quasar Demo Fork of the element-tiptap reposetory
