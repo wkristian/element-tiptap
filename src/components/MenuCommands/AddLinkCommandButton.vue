@@ -33,6 +33,7 @@ export default class AddLinkCommandButton extends Mixins(i18nMixin) {
       title: this.t('editor.extensions.Link.add.control.title'),
       prompt: {
         type: 'url', // optional
+        model: ''
       },
       ok: {
         label: this.t('editor.extensions.Link.add.control.confirm'),

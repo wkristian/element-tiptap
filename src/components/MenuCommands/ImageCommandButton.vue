@@ -1,70 +1,65 @@
 <template>
   <div>
-    <el-popover
-      placement="bottom"
-      trigger="click"
-      popper-class="el-tiptap-popper"
-    >
-      <div class="el-tiptap-popper__menu">
-        <div
-          class="el-tiptap-popper__menu__item"
-          @click="openUrlPrompt"
-        >
-          <span>{{ t('editor.extensions.Image.buttons.insert_by_url') }}</span>
-        </div>
-
-        <div
-          class="el-tiptap-popper__menu__item"
-          @click="imageUploadDialogVisible = true"
-        >
-          <span>{{ t('editor.extensions.Image.buttons.upload_image') }}</span>
-        </div>
-      </div>
+    <q-popup-proxy :target="$refs.buttonAddImg" ref="popoverRef" :offset="[10, 5]" auto-close>
+      <q-list dense>
+        <q-item clickable v-ripple @click.prevent="openUrlPrompt">
+          <q-item-section>
+            <q-item-label>
+              {{ t('editor.extensions.Image.buttons.insert_by_url') }}
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable v-ripple @click.prevent="imageUploadDialogVisible = true">
+          <q-item-section>
+            <q-item-label>
+              {{ t('editor.extensions.Image.buttons.upload_image') }}
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </q-popup-proxy>
 
       <command-button
         slot="reference"
         :tooltip="t('editor.extensions.Image.tooltip')"
         icon="image"
+        ref="buttonAddImg"
       />
-    </el-popover>
 
-    <el-dialog
-      :title="t('editor.extensions.Image.control.upload_image.title')"
-      :visible.sync="imageUploadDialogVisible"
-    >
-      <el-upload
-        :http-request="uploadImage"
-        :show-file-list="false"
-        class="el-tiptap-upload"
-        action="#"
-        drag
-        accept="image/*"
-      >
-        <div class="el-tiptap-upload__icon">
-          <i class="fa fa-upload" />
-        </div>
-        <div class="el-tiptap-upload__text">
-          {{ t('editor.extensions.Image.control.upload_image.button') }}
-        </div>
-      </el-upload>
-    </el-dialog>
+    <q-dialog v-model="imageUploadDialogVisible">
+
+          <q-uploader
+            :factory="uploadImage"
+            ref="uploader"
+            :label="t('editor.extensions.Image.control.upload_image.title')"
+            text-color="black"
+            no-thumbnails
+            style="max-width: 500px"
+            auto-upload
+            accept=".jpg, .png, image/*"
+          >
+          <template v-slot:list="" >
+              <div style="width: 200px; height: 200px;">
+
+              </div>
+          </template>
+          </q-uploader>
+
+    </q-dialog>
+
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Mixins } from 'vue-property-decorator';
-import { Dialog, Upload, MessageBox, Popover } from 'element-ui';
-import { HttpRequestOptions } from 'element-ui/types/upload';
 import { MenuData } from 'tiptap';
 import i18nMixin from '@/mixins/i18nMixin';
 import { readFileDataUrl } from '@/utils/shared';
 import CommandButton from './CommandButton.vue';
+// import { HttpRequestOptions } from 'element-ui/types/upload';
 
 @Component({
   components: {
-    [Dialog.name]: Dialog,
-    [Upload.name]: Upload,
-    [Popover.name]: Popover,
     CommandButton,
   },
 })
@@ -82,23 +77,32 @@ export default class ImageCommandButton extends Mixins(i18nMixin) {
   }
 
   openUrlPrompt (): void {
-    MessageBox.prompt('', this.t('editor.extensions.Image.control.insert_by_url.title'), {
-      confirmButtonText: this.t('editor.extensions.Image.control.insert_by_url.confirm'),
-      cancelButtonText: this.t('editor.extensions.Image.control.insert_by_url.cancel'),
-      inputPlaceholder: this.t('editor.extensions.Image.control.insert_by_url.placeholder'),
-      inputPattern: this.imageNodeOptions.urlPattern,
-      inputErrorMessage: this.t('editor.extensions.Image.control.insert_by_url.invalid_url'),
-      roundButton: true,
     // @ts-ignore
-    }).then(({ value: url }) => {
+    this.$q.dialog({
+      title: this.t('editor.extensions.Image.control.insert_by_url.title'),
+      prompt: {
+        type: 'url', // optional
+        model: '',
+      },
+      ok: {
+        label: this.t('editor.extensions.Image.control.insert_by_url.confirm'),
+        flat: true,
+        rounded: true
+      },
+      cancel: {
+        label: this.t('editor.extensions.Image.control.insert_by_url.cancel'),
+        flat: true,
+        rounded: true
+      },
+      persistent: false
+      // @ts-ignore
+    }).onOk(url => {
       this.editorContext.commands.image({ src: url });
-    }).catch(() => {
-
     });
   }
 
-  async uploadImage (requestOptions: HttpRequestOptions) {
-    const { file } = requestOptions;
+  async uploadImage (files: any) {
+    const file = files[0];
 
     const uploadRequest = this.imageNodeOptions.uploadRequest;
     const url = await (uploadRequest ? uploadRequest(file) : readFileDataUrl(file));

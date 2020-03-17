@@ -7,9 +7,11 @@ import '@quasar/extras/material-icons/material-icons.css';
 import {
   Quasar,
   QDialog,
+  QPopupProxy,
+  QUploader,
   ClosePopup,
   Dialog,
-  QBtn
+  QBtn,
 } from 'quasar';
 
 import {
@@ -39,7 +41,9 @@ Vue.use(Quasar, {
   },
   components: {
     QDialog,
-    QBtn
+    QPopupProxy,
+    QBtn,
+    QUploader,
   },
   directives: {
     ClosePopup
